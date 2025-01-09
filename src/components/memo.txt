@@ -1,0 +1,119 @@
+`'formatContent' が宣言されていますが、その値が読み取られることはありません。ts(6133)` という警告は、`formatContent` 関数が宣言されているものの、実際に使用されていないため、TypeScript が警告を出しているものです。
+
+### この警告を解決するために、以下のいずれかの方法で対処できます。
+
+#### 1. `MemoForm.tsx` で `formatContent` を使用する場合
+`formatContent` 関数が `MemoForm.tsx` で宣言されているが使用されていない場合、この関数を実際に使用する必要があります。
+
+もし `MemoForm.tsx` 内で改行を適用したい部分がある場合、その部分に `formatContent` を使うことで警告を解消できます。たとえば、`memo.content` に対して改行を適用する場合、`formatContent` を次のように使います。
+
+### 例: `MemoForm.tsx` での改行処理を使用する
+
+```tsx
+import React, { useState, useEffect } from 'react';
+
+type Memo = {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: Date;
+};
+
+type MemoFormProps = {
+  onAddMemo: (title: string, content: string) => void;
+  editingMemo: Memo | null;
+  onEditMemo: (memo: Memo) => void;
+};
+
+const MemoForm: React.FC<MemoFormProps> = ({
+  onAddMemo,
+  editingMemo,
+  onEditMemo
+}) => {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  // 編集モード時にフォームに既存データを設定
+  useEffect(() => {
+    if (editingMemo) {
+      setTitle(editingMemo.title);
+      setContent(editingMemo.content);
+    }
+  }, [editingMemo]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim()) return;
+
+    if (editingMemo) {
+      onEditMemo({
+        ...editingMemo,
+        title,
+        content
+      });
+    } else {
+      onAddMemo(title, content);
+    };
+
+    // フォームリセット
+    setTitle('');
+    setContent('');
+  };
+
+  // 改行を <br /> タグに変換する関数
+  const formatContent = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="メモのタイトル"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <textarea
+        placeholder="メモの内容"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+      <button type="submit">
+        {editingMemo ? '更新' : '追加'}
+      </button>
+
+      {/* ここで formatContent を使用 */}
+      <div>
+        <h3>プレビュー</h3>
+        <p>{formatContent(content)}</p>  {/* 改行を反映させる */}
+      </div>
+    </form>
+  );
+};
+
+export default MemoForm;
+```
+
+### この変更についてのポイント：
+- `formatContent` 関数をフォーム内で使用し、`content` の改行をブラウザで反映させています。これで、`formatContent` が使用されるようになるため、警告は解消されます。
+
+#### 2. `formatContent` を `MemoForm.tsx` 内で使わない場合
+もし `MemoForm.tsx` 内で改行を反映させる必要がない場合、単に `formatContent` を削除すれば警告は解消されます。
+
+```tsx
+// 使っていないので、関数を削除
+// const formatContent = (text: string) => { ... };
+```
+
+これで、使っていない関数がなくなるので、警告が解消されます。
+
+---
+
+### まとめ
+- **`formatContent` を使用する場合**、その関数を実際にコンポーネント内で使用することで警告を解消できます（たとえばプレビュー表示での改行）。
+- **`formatContent` を使用しない場合**、その関数を削除すれば警告が解消されます。
