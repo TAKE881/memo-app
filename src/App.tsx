@@ -51,11 +51,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div style={{
-      fontSize: '10px',
-      backgroundColor: 'rgb(555,555,55,0.3)',
-    }}>
-      <h1>メモ帳アプリ</h1>
+    <div className='memozone'>
+      <h1>MEMO</h1>
       <MemoForm
         onAddMemo={addMemo}
         editingMemo={editingMemo}
