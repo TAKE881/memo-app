@@ -34,8 +34,13 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
+.memozone {
+border-radius:15px;
+  background-image: url(../public/steve-payne-f2wJRB93vJU-unsplashSize70.jpg);
+  font-size:  10px;
+}
 button {
+  margin-left: 2px;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -56,8 +61,8 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #ffffff;
+    background-color: #417d33;
   }
   a:hover {
     color: #747bff;
@@ -65,4 +70,36 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+.container {/* 全サイズに適用（スマホ以上） */
+  margin: 0 auto;
+  background-color: pink;
+}
+
+@media (min-width: 576px) {/*　スマホ大・横向き〜 */
+ .container {
+   max-width: 540px;
+   background-color: blue;
+ }
+}
+
+@media (min-width: 768px) {/* タブレット〜 */
+ .container {
+   max-width: 720px;
+   background-color: green;
+ }
+}
+
+@media (min-width: 992px) {/* PC〜 */
+ .container {
+   max-width: 960px;
+   background-color: yellow;
+ }
+}
+
+@media (min-width: 1200px) {/* PCワイド、PCワイド以上 */
+ .container {
+   max-width: 1140px;
+   background-color: red;
+ }
 }
